@@ -2,7 +2,7 @@
 
 ⚠️ Only weekly is available. API is under heavy development 😅
 
-# How to use it
+## How to use it
 
 First, get a **Ktoggl API** consumer:
 
@@ -23,4 +23,17 @@ val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyPr
         since(LocalDate.parse("2021-02-22"))
     }
 ```
+
+## TODO
+
+Report:
+
+✅ Weekly
+🛑 Detailed (actually)
+🛑 Summary
+🛑 Project dashboard
+
+V8:
+
+🛑 Everything
 
