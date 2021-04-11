@@ -29,8 +29,11 @@ val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyPr
 Report:
 
 ✅ Weekly
+
 🛑 Detailed (actually)
+
 🛑 Summary
+
 🛑 Project dashboard
 
 V8:
