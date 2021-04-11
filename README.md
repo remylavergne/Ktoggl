@@ -1,4 +1,4 @@
-# KToggl
+# Ktoggl
 
 ⚠️ Only weekly is available. API is under heavy development 😅
 
