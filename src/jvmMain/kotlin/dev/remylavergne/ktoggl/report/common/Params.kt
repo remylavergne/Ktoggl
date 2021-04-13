@@ -157,7 +157,6 @@ class Params {
     }
 }
 
-
 data class ParamString(override val key: String, override val value: String) : Param<String> {
     override fun get(): String = "$key=$value"
 
@@ -232,7 +231,7 @@ data class ParamSwitch(override val key: String, override val value: Value) : Pa
 }
 
 data class ParamHours(override val key: String, override val value: Value = Value.MINUTES) : Param<ParamHours.Value> {
-    override fun get(): String = "$key=$value"
+    override fun get(): String = "$key=${value.v}"
 
     override fun valid(): Boolean = true
 
@@ -252,6 +251,14 @@ data class ParamGrouping(override val key: String, override val value: Grouping)
         USERS("users"),
         PROJECTS("projects"),
     }
+} // TODO: Make generic
+
+data class ParamInt(override val key: String, override val value: Int) : Param<Int> {
+
+    override fun get(): String = "$key=$value"
+
+    override fun valid(): Boolean = true
+
 } // TODO: Make generic
 
 data class ParamCalculate(override val key: String, override val value: Calculate) : Param<ParamCalculate.Calculate> {

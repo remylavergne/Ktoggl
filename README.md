@@ -1,10 +1,12 @@
-# KToggl
+# Ktoggl
 
 ⚠️ Only weekly is available. API is under heavy development 😅
 
-# How to use it
+## How to use it
 
-First, get a **Ktoggl API** consumer:
+### Report API
+
+First, get a **Ktoggl Report** consumer:
 
 ```kotlin
  val reportApi: KtogglReportApi = KtogglReportApi {
@@ -14,13 +16,39 @@ First, get a **Ktoggl API** consumer:
     }
 ```
 
-Then, consume the API: 
+Then, consume the API:
 
 ```kotlin
+// Weekly example
 val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyProjectsTime {
+    userAgent(USER_AGENT)
+    workspaceId(WORKSPACE_ID)
+    since(LocalDate.parse("2021-02-22"))
+}
+```
+
+```kotlin
+// Details
+ val detailed: ApiResult<BaseDetailed> = reportApi.details(page = 2) {
         userAgent(USER_AGENT)
         workspaceId(WORKSPACE_ID)
-        since(LocalDate.parse("2021-02-22"))
+        since(LocalDate.parse("2021-04-06"))
+        until(LocalDate.parse("2021-04-07"))
     }
 ```
 
+## TODO
+
+Report:
+
+✅ Weekly
+
+✅ Detailed
+
+🛑 Summary
+
+🛑 Project dashboard
+
+V8:
+
+🛑 Everything

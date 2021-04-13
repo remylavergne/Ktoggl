@@ -30,3 +30,18 @@ data class BaseEarnings<T>(
     @SerialName("week_totals")
     val weekTotals: List<CurrencyValue>,
 )
+
+@Serializable
+data class BaseDetailed(
+    @SerialName("total_grand")
+    val totalGrand: Long?,
+    @SerialName("total_billable")
+    val totalBillable: Long?,
+    @SerialName("total_currencies")
+    val totalCurrencies: List<CurrencyValue>,
+    @SerialName("total_count")
+    val totalCount: Int,
+    @SerialName("per_page")
+    val perPage: Int,
+    val data: List<TimeEntry>,
+)
