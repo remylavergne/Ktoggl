@@ -29,7 +29,7 @@ val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyPr
 
 ```kotlin
 // Details
- val detailed: ApiResult<BaseDetailed> = reportApi.detailed(page = 2) {
+ val detailed: ApiResult<BaseDetailed> = reportApi.details(page = 2) {
         userAgent(USER_AGENT)
         workspaceId(WORKSPACE_ID)
         since(LocalDate.parse("2021-04-06"))
