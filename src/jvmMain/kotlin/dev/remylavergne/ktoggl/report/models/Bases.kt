@@ -45,3 +45,14 @@ data class BaseDetailed(
     val perPage: Int,
     val data: List<TimeEntry>,
 )
+
+@Serializable
+data class BaseSummaryProjects<T : Summary, R : Summary>(
+    @SerialName("total_grand")
+    val totalGrand: Long?,
+    @SerialName("total_billable")
+    val totalBillable: Long?,
+    @SerialName("total_currencies")
+    val totalCurrencies: List<CurrencyValue>,
+    val data: List<SummaryData<T, R>>,
+)
