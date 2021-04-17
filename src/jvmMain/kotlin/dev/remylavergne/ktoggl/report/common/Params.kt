@@ -251,7 +251,36 @@ data class ParamGrouping(override val key: String, override val value: Grouping)
         USERS("users"),
         PROJECTS("projects"),
     }
-} // TODO: Make generic
+}
+
+data class ParamSummaryGrouping(override val key: String, override val value: By) : Param<ParamSummaryGrouping.By> {
+
+    override fun get(): String = "$key=${value.v}"
+
+    override fun valid(): Boolean = true
+
+    enum class By(val v: String) {
+        PROJECTS("projects"),
+        USERS("users"),
+        CLIENTS("clients"),
+    }
+}
+
+data class ParamSummarySubgrouping(override val key: String, override val value: By) :
+    Param<ParamSummarySubgrouping.By> {
+
+    override fun get(): String = "$key=${value.v}"
+
+    override fun valid(): Boolean = true
+
+    enum class By(val v: String) {
+        PROJECTS("projects"),
+        CLIENTS("clients"),
+        USERS("users"),
+        TASKS("tasks"),
+        TIME_ENTRIES("time_entries")
+    }
+}
 
 data class ParamInt(override val key: String, override val value: Int) : Param<Int> {
 
