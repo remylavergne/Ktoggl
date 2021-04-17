@@ -1,5 +1,6 @@
 package dev.remylavergne.ktoggl.report.common
 
+import dev.remylavergne.ktoggl.duplicate
 import java.time.LocalDate
 
 
@@ -10,7 +11,14 @@ class Params {
 
     private val accumulator = mutableListOf<Param<*>>()
 
-    fun get() = accumulator.toTypedArray()
+    fun get(): Array<Param<*>> {
+        val params = accumulator.toTypedArray()
+        if (params.duplicate()) {
+            throw Exception("Error: Some request parameters are duplicated")
+        }
+
+        return accumulator.toTypedArray()
+    }
 
     // Params mandatory // TODO: Delete ?!
     fun userAgent(data: String): Param<String> {
