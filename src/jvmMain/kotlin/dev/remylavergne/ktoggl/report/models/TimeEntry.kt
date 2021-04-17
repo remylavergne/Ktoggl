@@ -9,15 +9,15 @@ data class TimeEntry(
     // id: time entry id
     val id: Long,
     // pid: project id
-    val pid: Long,
+    val pid: Long?,
     // project: project name for which the time entry was recorded
-    val project: String,
+    val project: String?,
     // project_color: Color used for this project
     @SerialName("project_color")
     val projectColor: String,
     // project_hex_color: Color HEX used for this project
     @SerialName("project_hex_color")
-    val projectHexColor: String,
+    val projectHexColor: String?,
     // client: client name for which the time entry was recorded
     val client: String?,
     // tid: task id
