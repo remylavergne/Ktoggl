@@ -60,6 +60,9 @@ data class KtogglReport(
         )
     }
 
+    /**
+     * By default, it only returns last week
+     */
     suspend fun details(page: Int = 1, block: Params.() -> Unit): ApiResult<BaseDetailed> {
         if (page <= 0) {
             throw Exception("Minimum page must be 1")
@@ -199,10 +202,7 @@ data class KtogglReport(
         vararg params: Param<*> = arrayOf(),
         endpoint: Endpoint
     ): ApiResult<T> {
-        if (params.duplicate()) {
-            return ApiResult.Error(message = "Some query params are duplicated")
-        }
-
+        
         val queryParams: String = arrayOf(*params).toQueryParams()
 
         val result: T =
@@ -210,4 +210,11 @@ data class KtogglReport(
 
         return ApiResult.Success(result)
     }
+}
+
+data class Request<T>(
+    val endpoint: Endpoint,
+    val params: Array<Param<*>> = emptyArray(),
+) {
+
 }
