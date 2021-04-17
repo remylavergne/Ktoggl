@@ -1,14 +1,12 @@
 package dev.remylavergne.ktoggl.report.business
 
 import dev.remylavergne.ktoggl.REPORT_BASE_URL
-import dev.remylavergne.ktoggl.duplicate
 import dev.remylavergne.ktoggl.report.common.*
 import dev.remylavergne.ktoggl.report.common.SummaryParams.grouping
 import dev.remylavergne.ktoggl.report.common.SummaryParams.subgrouping
 import dev.remylavergne.ktoggl.report.models.*
 import dev.remylavergne.ktoggl.report.service.ApiResult
 import dev.remylavergne.ktoggl.toQueryParams
-import io.ktor.client.*
 import io.ktor.client.request.*
 
 
@@ -202,11 +200,11 @@ data class KtogglReport(
         vararg params: Param<*> = arrayOf(),
         endpoint: Endpoint
     ): ApiResult<T> {
-        
+
         val queryParams: String = arrayOf(*params).toQueryParams()
 
         val result: T =
-            account.httpClient.use { client: HttpClient -> client.get<T>("$REPORT_BASE_URL${endpoint.v}$queryParams") }
+            account.httpClient.get("$REPORT_BASE_URL${endpoint.v}$queryParams")
 
         return ApiResult.Success(result)
     }
