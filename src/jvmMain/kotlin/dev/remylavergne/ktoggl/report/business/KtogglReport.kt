@@ -89,7 +89,7 @@ data class KtogglReport(
 
             for (page in 1..remainingPages) {
                 val remainingCall =
-                    makeApiCall<BaseDetailed>(*params, DetailedParams.page(page), endpoint = Endpoint.DETAILED)
+                    makeApiCall<BaseDetailed>(*params, DetailedParams.page(page + 1), endpoint = Endpoint.DETAILED)
 
                 manyResponses.add(remainingCall)
             }
