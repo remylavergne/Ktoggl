@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform") version "1.4.31"
-    kotlin("plugin.serialization") version "1.4.31"
+    kotlin("multiplatform")
+    kotlin("plugin.serialization")
 }
 
 group = "dev.remylavergne"
