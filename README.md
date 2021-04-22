@@ -18,6 +18,8 @@ First, get a **Ktoggl Report** consumer:
 
 Then, consume the API:
 
+- Weekly
+
 ```kotlin
 // Weekly example
 val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyProjectsTime {
@@ -27,8 +29,10 @@ val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyPr
 }
 ```
 
+- Detailed -> Wrapper allowed to retrieve all data at once if a paging exists (more than 50 tasks available)
+
 ```kotlin
-// Details
+// Details with specific page
  val detailed: ApiResult<BaseDetailed> = reportApi.details(page = 2) {
         userAgent(USER_AGENT)
         workspaceId(WORKSPACE_ID)
@@ -37,18 +41,19 @@ val weeklyProjectsTime: ApiResult<WeeklyProjectsTimeResult> = reportApi.weeklyPr
     }
 ```
 
-## TODO
+```kotlin
+// All details -> pagination is automatically handled
+ val detailed: ApiResult<BaseDetailed> = ktogglReportApi.detailsWithoutPaging {
+        userAgent(USER_AGENT)
+        workspaceId(WORKSPACE_ID)
+        since(LocalDate.parse("2021-04-06"))
+        until(LocalDate.parse("2021-04-07"))
+    }
+```
 
-Report:
-
-✅ Weekly
-
-✅ Detailed
-
-🛑 Summary
-
-🛑 Project dashboard
+- Summary
+- Project dashboard
 
 V8:
 
-🛑 Everything
+🛑 Everything (in progress... and future integration with [Ktoggl CLI](https://github.com/remylavergne/Ktoggl-CLI))
