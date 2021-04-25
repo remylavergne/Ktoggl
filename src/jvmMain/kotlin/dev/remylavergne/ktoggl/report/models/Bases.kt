@@ -32,7 +32,7 @@ data class BaseEarnings<T>(
 )
 
 @Serializable
-data class BaseDetailed(
+data class BaseDetails(
     @SerialName("total_grand")
     val totalGrand: Long?,
     @SerialName("total_billable")

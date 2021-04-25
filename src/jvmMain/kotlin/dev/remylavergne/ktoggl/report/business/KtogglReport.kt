@@ -9,7 +9,6 @@ import dev.remylavergne.ktoggl.report.service.ApiResult
 import dev.remylavergne.ktoggl.toQueryParams
 import io.ktor.client.request.*
 import kotlinx.coroutines.delay
-import java.util.*
 
 
 typealias WeeklyProjectsTimeResult = BaseTime<List<WeeklyProjectsTime>>
@@ -63,7 +62,7 @@ data class KtogglReport(
     /**
      * By default, it only returns last week
      */
-    suspend fun details(page: Int = 1, block: Params.() -> Unit): ApiResult<BaseDetailed> {
+    suspend fun details(page: Int = 1, block: Params.() -> Unit): ApiResult<BaseDetails> {
         if (page <= 0) {
             throw Exception("Minimum page must be 1")
         }
@@ -73,14 +72,14 @@ data class KtogglReport(
         return makeApiCall(*params, pageParam, endpoint = Endpoint.DETAILED)
     }
 
-    suspend fun detailsWithoutPaging(block: Params.() -> Unit): ApiResult<BaseDetailed> {
+    suspend fun detailsWithoutPaging(block: Params.() -> Unit): ApiResult<BaseDetails> {
         // Checks
         val params = Params().apply(block).get()
-        val firstResponse = makeApiCall<BaseDetailed>(*params, DetailedParams.page(1), endpoint = Endpoint.DETAILED)
+        val firstResponse = makeApiCall<BaseDetails>(*params, DetailedParams.page(1), endpoint = Endpoint.DETAILED)
 
         if (firstResponse is ApiResult.Success && firstResponse.data.totalCount > firstResponse.data.perPage) {
             // More than one page -> retrieve every data
-            val manyResponses = mutableListOf<ApiResult<BaseDetailed>>()
+            val manyResponses = mutableListOf<ApiResult<BaseDetails>>()
             manyResponses.add(firstResponse)
 
             // Make others requests
@@ -89,16 +88,16 @@ data class KtogglReport(
 
             for (page in 1..remainingPages) {
                 val remainingCall =
-                    makeApiCall<BaseDetailed>(*params, DetailedParams.page(page + 1), endpoint = Endpoint.DETAILED)
+                    makeApiCall<BaseDetails>(*params, DetailedParams.page(page + 1), endpoint = Endpoint.DETAILED)
 
                 manyResponses.add(remainingCall)
             }
 
             val allData = manyResponses
-                .filterIsInstance<ApiResult.Success<BaseDetailed>>()
+                .filterIsInstance<ApiResult.Success<BaseDetails>>()
                 .map { response -> response.data.data }
 
-            val updatedResponse = BaseDetailed(
+            val updatedResponse = BaseDetails(
                 totalGrand = firstResponse.data.totalGrand,
                 totalBillable = firstResponse.data.totalBillable,
                 totalCurrencies = firstResponse.data.totalCurrencies,
