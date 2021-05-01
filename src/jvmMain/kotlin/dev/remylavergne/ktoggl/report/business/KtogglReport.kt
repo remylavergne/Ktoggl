@@ -83,8 +83,12 @@ data class KtogglReport(
             manyResponses.add(firstResponse)
 
             // Make others requests
-            val remainingPages: Int =
+            var remainingPages: Int =
                 (firstResponse.data.totalCount - firstResponse.data.perPage) / firstResponse.data.perPage
+
+            if (firstResponse.data.totalCount > firstResponse.data.perPage && firstResponse.data.totalCount % firstResponse.data.perPage > 0) {
+                remainingPages++
+            }
 
             for (page in 1..remainingPages) {
                 val remainingCall =
@@ -250,11 +254,4 @@ data class KtogglReport(
 
         return ApiResult.Success(result)
     }
-}
-
-data class Request<T>(
-    val endpoint: Endpoint,
-    val params: Array<Param<*>> = emptyArray(),
-) {
-
 }
