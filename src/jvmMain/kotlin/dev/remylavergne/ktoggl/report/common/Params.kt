@@ -92,21 +92,21 @@ class Params {
 
 
     // tag_ids: A list of tag IDs separated by a comma. Use "0" if you want to filter out time entries without a tag.
-    fun tagsIds(data: List<String>): Param<List<String>> {
+    fun tagsIds(data: List<Int>): Param<List<Int>> {
         val paramIdsDefault = ParamIdsDefault(key = "tag_ids", value = data)
         accumulator.add(paramIdsDefault)
         return paramIdsDefault
     }
 
     // task_ids: A list of task IDs separated by a comma. Use "0" if you want to filter out time entries without a task.
-    fun taskIds(data: List<String>): Param<List<String>> {
+    fun taskIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "task_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
     }
 
     // time_entry_ids: A list of time entry IDs separated by a comma.
-    fun timeEntryIds(data: List<String>): Param<List<String>> {
+    fun timeEntryIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "time_entry_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
@@ -310,14 +310,14 @@ data class ParamCalculate(override val key: String, override val value: Calculat
     }
 } // TODO: Make generic
 
-data class ParamIds(override val key: String, override val value: List<String>) : Param<List<String>> {
+data class ParamIds(override val key: String, override val value: List<Integer>) : Param<List<Int>> {
     override fun get(): String = "$key=${value.joinToString(separator = ",")}"
 
     override fun valid(): Boolean = this.value.isNotEmpty()
 }
 
-data class ParamIdsDefault(override val key: String, override val value: List<String> = listOf("0")) :
-    Param<List<String>> {
+data class ParamIdsDefault(override val key: String, override val value: List<Int> = listOf(0)) :
+    Param<List<Int>> {
     override fun get(): String = "$key=${value.joinToString(separator = ",")}"
 
     override fun valid(): Boolean = true

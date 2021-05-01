@@ -14,7 +14,7 @@ data class KtogglV8(
     fun workspace(id: String): Workspace {
         return Workspace(id, account.httpClient)
     }
-    
+
     companion object {
 
         suspend inline fun <reified T> makeApiCall(httpClient: HttpClient, endpoint: String): ApiResult<T> {
@@ -41,8 +41,8 @@ data class Workspace(
 
 @Serializable
 data class Tags(
-    private val id: Int,
-    private val wid: Int,
-    private val name: String,
-    private val at: String,
+    val id: Int,
+    val wid: Int,
+    val name: String,
+    val at: String,
 )
