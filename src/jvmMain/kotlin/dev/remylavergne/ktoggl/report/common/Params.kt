@@ -55,28 +55,28 @@ class Params {
     }
 
     // client_ids: A list of client IDs separated by a comma. Use "0" if you want to filter out time entries without a client.
-    fun clientIds(data: List<String>): Param<List<String>> {
+    fun clientIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "client_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
     }
 
     // project_ids: A list of project IDs separated by a comma. Use "0" if you want to filter out time entries without a project.
-    fun projectIds(data: List<String>): Param<List<String>> {
+    fun projectIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "project_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
     }
 
     // user_ids: A list of user IDs separated by a comma.
-    fun userIds(data: List<String>): Param<List<String>> {
+    fun userIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "user_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
     }
 
     // members_of_group_ids: A list of group IDs separated by a comma. This limits provided user_ids to the members of the given groups.
-    fun membersOfGroupIds(data: List<String>): Param<List<String>> {
+    fun membersOfGroupIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "members_of_group_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
@@ -84,7 +84,7 @@ class Params {
 
 
     // or_members_of_group_ids: A list of group IDs separated by a comma. This extends provided user_ids with the members of the given groups.
-    fun orMembersOfGroupIds(data: List<String>): Param<List<String>> {
+    fun orMembersOfGroupIds(data: List<Int>): Param<List<Int>> {
         val paramIds = ParamIds(key = "or_members_of_group_ids", value = data)
         accumulator.add(paramIds)
         return paramIds
@@ -310,7 +310,7 @@ data class ParamCalculate(override val key: String, override val value: Calculat
     }
 } // TODO: Make generic
 
-data class ParamIds(override val key: String, override val value: List<Integer>) : Param<List<Int>> {
+data class ParamIds(override val key: String, override val value: List<Int>) : Param<List<Int>> {
     override fun get(): String = "$key=${value.joinToString(separator = ",")}"
 
     override fun valid(): Boolean = this.value.isNotEmpty()
