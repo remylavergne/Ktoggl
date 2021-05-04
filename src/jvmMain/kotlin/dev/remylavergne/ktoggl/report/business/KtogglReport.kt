@@ -25,7 +25,7 @@ data class KtogglReport(
         val params = Params().apply(block).get()
         return this.makeApiCall(
             *params, WeeklyParams.grouping(), WeeklyParams.calculate(),
-            endpoint = Endpoint.WEEKLY,
+            reportEndpoint = ReportEndpoint.WEEKLY,
         )
     }
 
@@ -35,7 +35,7 @@ data class KtogglReport(
             *params,
             WeeklyParams.grouping(),
             WeeklyParams.calculate(ParamCalculate.Calculate.EARNINGS),
-            endpoint = Endpoint.WEEKLY,
+            reportEndpoint = ReportEndpoint.WEEKLY,
         )
     }
 
@@ -45,7 +45,7 @@ data class KtogglReport(
             *params,
             WeeklyParams.grouping(ParamGrouping.Grouping.USERS),
             WeeklyParams.calculate(),
-            endpoint = Endpoint.WEEKLY,
+            reportEndpoint = ReportEndpoint.WEEKLY,
         )
     }
 
@@ -55,7 +55,7 @@ data class KtogglReport(
             *params,
             WeeklyParams.grouping(ParamGrouping.Grouping.USERS),
             WeeklyParams.calculate(ParamCalculate.Calculate.EARNINGS),
-            endpoint = Endpoint.WEEKLY,
+            reportEndpoint = ReportEndpoint.WEEKLY,
         )
     }
 
@@ -69,13 +69,14 @@ data class KtogglReport(
         val params = Params().apply(block).get()
         val pageParam: Param<Int> = DetailedParams.page(page)
 
-        return makeApiCall(*params, pageParam, endpoint = Endpoint.DETAILED)
+        return makeApiCall(*params, pageParam, reportEndpoint = ReportEndpoint.DETAILED)
     }
 
     suspend fun detailsWithoutPaging(block: Params.() -> Unit): ApiResult<BaseDetails> {
         // Checks
         val params = Params().apply(block).get()
-        val firstResponse = makeApiCall<BaseDetails>(*params, DetailedParams.page(1), endpoint = Endpoint.DETAILED)
+        val firstResponse =
+            makeApiCall<BaseDetails>(*params, DetailedParams.page(1), reportEndpoint = ReportEndpoint.DETAILED)
 
         if (firstResponse is ApiResult.Success && firstResponse.data.totalCount > firstResponse.data.perPage) {
             // More than one page -> retrieve every data
@@ -92,7 +93,11 @@ data class KtogglReport(
 
             for (page in 1..remainingPages) {
                 val remainingCall =
-                    makeApiCall<BaseDetails>(*params, DetailedParams.page(page + 1), endpoint = Endpoint.DETAILED)
+                    makeApiCall<BaseDetails>(
+                        *params,
+                        DetailedParams.page(page + 1),
+                        reportEndpoint = ReportEndpoint.DETAILED
+                    )
 
                 manyResponses.add(remainingCall)
             }
@@ -126,7 +131,7 @@ data class KtogglReport(
             *params,
             grouping(),
             subgrouping(),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -136,7 +141,7 @@ data class KtogglReport(
             *params,
             grouping(),
             subgrouping(ParamSummarySubgrouping.By.TASKS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -146,7 +151,7 @@ data class KtogglReport(
             *params,
             grouping(),
             subgrouping(ParamSummarySubgrouping.By.USERS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -160,7 +165,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.CLIENTS),
             subgrouping(ParamSummarySubgrouping.By.TIME_ENTRIES),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -170,7 +175,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.CLIENTS),
             subgrouping(ParamSummarySubgrouping.By.TASKS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -180,7 +185,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.CLIENTS),
             subgrouping(ParamSummarySubgrouping.By.PROJECTS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -190,7 +195,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.CLIENTS),
             subgrouping(ParamSummarySubgrouping.By.USERS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -204,7 +209,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.USERS),
             subgrouping(ParamSummarySubgrouping.By.TIME_ENTRIES),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -214,7 +219,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.USERS),
             subgrouping(ParamSummarySubgrouping.By.TASKS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -224,7 +229,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.USERS),
             subgrouping(ParamSummarySubgrouping.By.PROJECTS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -234,7 +239,7 @@ data class KtogglReport(
             *params,
             grouping(ParamSummaryGrouping.By.USERS),
             subgrouping(ParamSummarySubgrouping.By.CLIENTS),
-            endpoint = Endpoint.SUMMARY,
+            reportEndpoint = ReportEndpoint.SUMMARY,
         )
     }
 
@@ -244,13 +249,13 @@ data class KtogglReport(
 
     private suspend inline fun <reified T> makeApiCall(
         vararg params: Param<*> = arrayOf(),
-        endpoint: Endpoint
+        reportEndpoint: ReportEndpoint
     ): ApiResult<T> {
         delay(1100) // API limit one call per seconds
         val queryParams: String = arrayOf(*params).toQueryParams()
 
         val result: T =
-            account.httpClient.get("$REPORT_BASE_URL${endpoint.v}$queryParams")
+            account.httpClient.get("$REPORT_BASE_URL${reportEndpoint.v}$queryParams")
 
         return ApiResult.Success(result)
     }

@@ -7,7 +7,7 @@ import java.time.LocalDate
 /**
  * API optionals query params
  */
-class Params {
+open class Params {
 
     private val accumulator = mutableListOf<Param<*>>()
 

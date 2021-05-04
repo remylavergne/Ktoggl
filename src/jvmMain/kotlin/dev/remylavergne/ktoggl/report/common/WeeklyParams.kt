@@ -4,7 +4,7 @@ import dev.remylavergne.ktoggl.report.common.Param
 import dev.remylavergne.ktoggl.report.common.ParamCalculate
 import dev.remylavergne.ktoggl.report.common.ParamGrouping
 
-object WeeklyParams {
+object WeeklyParams: Params() {
     fun grouping(data: ParamGrouping.Grouping = ParamGrouping.Grouping.PROJECTS): Param<ParamGrouping.Grouping> =
         ParamGrouping(key = "grouping", value = data)
 
